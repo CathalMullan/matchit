@@ -103,23 +103,26 @@ As it turns out, this method of routing is extremely fast. In a benchmark matchi
 in under 200 nanoseconds, an order of magnitude faster than most other routers. You can view the benchmark code [here](https://github.com/ibraheemdev/matchit/blob/master/benches/bench.rs). 
 
 ```text
-Compare Routers/matchit 
-time:   [175.96 ns 176.39 ns 176.84 ns]
+Compare Routers/matchit
+time:   [214.63 ns 214.73 ns 214.86 ns]
 
 Compare Routers/actix
-time:   [26.805 us 26.811 us 26.816 us]
+time:   [22.215 µs 22.264 µs 22.314 µs]
 
 Compare Routers/path-tree
-time:   [468.95 ns 470.34 ns 471.65 ns]
+time:   [495.07 ns 495.58 ns 496.28 ns]
 
 Compare Routers/regex
-time:   [22.539 us 22.584 us 22.639 us]
+time:   [1.1631 µs 1.1643 µs 1.1660 µs]
 
 Compare Routers/route-recognizer
-time:   [3.7552 us 3.7732 us 3.8027 us]
+time:   [4.8617 µs 4.8665 µs 4.8726 µs]
 
 Compare Routers/routefinder
-time:   [5.7313 us 5.7405 us 5.7514 us]
+time:   [6.5249 µs 6.5303 µs 6.5371 µs]
+
+Compare Routers/gonzales
+time:   [180.42 ns 180.66 ns 180.90 ns]
 ```
 
 ## Credits
