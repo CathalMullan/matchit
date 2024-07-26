@@ -1,2 +1,14 @@
-/target
-Cargo.lock
+# Rust
+target
+*.rs.bk
+
+# Nix
+result
+result-dev
+result-man
+result-info
+result-lib
+result-bin
+
+# Dir Env
+.direnv
