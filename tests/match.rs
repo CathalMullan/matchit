@@ -88,8 +88,8 @@ impl MatchTest {
                     let got = x.params.iter().collect::<Vec<_>>();
                     assert_eq!(params.unwrap(), got);
 
-                    router.at_mut(path).unwrap().value.push_str("Z");
-                    assert!(router.at(path).unwrap().value.contains("Z"));
+                    router.at_mut(path).unwrap().value.push('Z');
+                    assert!(router.at(path).unwrap().value.contains('Z'));
                     router.at_mut(path).unwrap().value.pop();
                 }
                 Err(_) => params.unwrap_err(),
@@ -116,7 +116,7 @@ fn bare_catchall() {
             ("foo/x/y", "foo/{*bar}", p! { "bar" => "x/y" }),
         ],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -176,7 +176,7 @@ fn normalized() {
             ("/s/s/s/d", "/s/s/{y}/d", p! { "y" => "s" }),
         ],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -215,7 +215,7 @@ fn blog() {
             ("/favicon.ico", "/favicon.ico", p! {}),
         ],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -262,7 +262,7 @@ fn double_overlap() {
             ),
         ],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -278,7 +278,7 @@ fn catchall_off_by_one() {
             ("/bar/x", "/bar/{*catchall}", p! { "catchall" => "x" }),
         ],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -310,7 +310,7 @@ fn overlap() {
             ("/xxx", "/{*bar}", p! { "bar" => "xxx" }),
         ],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -326,7 +326,7 @@ fn missing_trailing_slash_param() {
             ),
         ],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -338,7 +338,7 @@ fn extra_trailing_slash_param() {
             ("/foo/secret/978", "/foo/secret/978", p! {}),
         ],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -354,7 +354,7 @@ fn missing_trailing_slash_catch_all() {
             ("/foo/secret/978/", "/foo/secret/978/", p! {}),
         ],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -370,7 +370,7 @@ fn extra_trailing_slash_catch_all() {
             ("/foo/secret/978", "/foo/secret/978", p! {}),
         ],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -405,7 +405,7 @@ fn double_overlap_trailing_slash() {
             ("/other/object/static/path", "", Err(())),
         ],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -418,7 +418,7 @@ fn trailing_slash_overlap() {
             ("/foo/bar/bar", "/foo/bar/bar", p! {}),
         ],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -495,7 +495,7 @@ fn trailing_slash() {
             ("/foo/p/p", "", Err(())),
         ],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -504,7 +504,7 @@ fn backtracking_trailing_slash() {
         routes: vec!["/a/{b}/{c}", "/a/b/{c}/d/"],
         matches: vec![("/a/b/c/d", "", Err(()))],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -513,7 +513,7 @@ fn root_trailing_slash() {
         routes: vec!["/foo", "/bar", "/{baz}"],
         matches: vec![("/", "", Err(()))],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -575,7 +575,7 @@ fn escaped() {
             ),
         ],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -628,7 +628,7 @@ fn basic() {
             ("/sd=here", "/sd=here", p! {}),
         ],
     }
-    .run()
+    .run();
 }
 
 #[test]
@@ -1043,5 +1043,5 @@ fn wildcard() {
             ),
         ],
     }
-    .run()
+    .run();
 }

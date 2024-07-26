@@ -26,7 +26,7 @@ fn compare_routers(c: &mut Criterion) {
 
     let mut path_tree = path_tree::PathTree::new();
     for route in register!(colon) {
-        path_tree.insert(route, true);
+        let _ = path_tree.insert(route, true);
     }
     group.bench_function("path-tree", |b| {
         b.iter(|| {

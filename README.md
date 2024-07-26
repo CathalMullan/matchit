@@ -104,25 +104,25 @@ in under 200 nanoseconds, an order of magnitude faster than most other routers. 
 
 ```text
 Compare Routers/matchit
-time:   [214.63 ns 214.73 ns 214.86 ns]
+time:   [220.81 ns 221.00 ns 221.23 ns]
 
 Compare Routers/actix
-time:   [22.215 µs 22.264 µs 22.314 µs]
+time:   [24.118 µs 24.199 µs 24.279 µs]
 
 Compare Routers/path-tree
-time:   [495.07 ns 495.58 ns 496.28 ns]
+time:   [380.76 ns 381.05 ns 381.35 ns]
 
 Compare Routers/regex
-time:   [1.1631 µs 1.1643 µs 1.1660 µs]
+time:   [1.3426 µs 1.3452 µs 1.3477 µs]
 
 Compare Routers/route-recognizer
-time:   [4.8617 µs 4.8665 µs 4.8726 µs]
+time:   [4.6427 µs 4.6479 µs 4.6535 µs]
 
 Compare Routers/routefinder
-time:   [6.5249 µs 6.5303 µs 6.5371 µs]
+time:   [6.1235 µs 6.1282 µs 6.1331 µs]
 
 Compare Routers/gonzales
-time:   [180.42 ns 180.66 ns 180.90 ns]
+time:   [177.19 ns 177.34 ns 177.53 ns]
 ```
 
 ## Credits

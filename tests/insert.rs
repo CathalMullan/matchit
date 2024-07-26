@@ -49,7 +49,7 @@ fn wildcard_conflict() {
         ("/id{id}", Ok(())),
         ("/id/{id}", Ok(())),
     ])
-    .run()
+    .run();
 }
 
 #[test]
@@ -61,12 +61,12 @@ fn invalid_catchall() {
         ("/src2/", Ok(())),
         ("/src2/{*filepath}/x", Err(InsertError::InvalidCatchAll)),
     ])
-    .run()
+    .run();
 }
 
 #[test]
 fn catchall_root_conflict() {
-    InsertTest(vec![("/", Ok(())), ("/{*filepath}", Ok(()))]).run()
+    InsertTest(vec![("/", Ok(())), ("/{*filepath}", Ok(()))]).run();
 }
 
 #[test]
@@ -86,7 +86,7 @@ fn child_conflict() {
         ("/{id}", Ok(())),
         ("/{*filepath}", Err(conflict("/{id}"))),
     ])
-    .run()
+    .run();
 }
 
 #[test]
@@ -103,7 +103,7 @@ fn duplicates() {
         ("/user_{name}", Ok(())),
         ("/user_{name}", Err(conflict("/user_{name}"))),
     ])
-    .run()
+    .run();
 }
 
 #[test]
@@ -114,7 +114,7 @@ fn unnamed_param() {
         ("/cmd/{}/", Err(InsertError::InvalidParam)),
         ("/src/{*}", Err(InsertError::InvalidParam)),
     ])
-    .run()
+    .run();
 }
 
 #[test]
@@ -124,7 +124,7 @@ fn double_params() {
         ("/{foo}{bar}/", Err(InsertError::InvalidParamSegment)),
         ("/{foo}{{*bar}/", Err(InsertError::InvalidParamSegment)),
     ])
-    .run()
+    .run();
 }
 
 #[test]
@@ -137,7 +137,7 @@ fn normalized_conflict() {
         ("/{z}/bar/bat", Ok(())),
         ("/{z}/bar/baz", Err(conflict("/{y}/bar/baz"))),
     ])
-    .run()
+    .run();
 }
 
 #[test]
@@ -155,7 +155,7 @@ fn more_conflicts() {
             Err(conflict("/whose/{users}/{name}")),
         ),
     ])
-    .run()
+    .run();
 }
 
 #[test]
@@ -200,7 +200,7 @@ fn duplicate_conflict() {
         ("/hey/user", Ok(())),
         ("/hey/user", Err(conflict("/hey/user"))),
     ])
-    .run()
+    .run();
 }
 
 #[test]
@@ -234,10 +234,10 @@ fn escaped_param() {
         ("/bar/{ba}}r}", Ok(())),
         ("/xxx/{x{{}}y}", Ok(())),
     ])
-    .run()
+    .run();
 }
 
 #[test]
 fn bare_catchall() {
-    InsertTest(vec![("{*foo}", Ok(())), ("foo/{*bar}", Ok(()))]).run()
+    InsertTest(vec![("{*foo}", Ok(())), ("foo/{*bar}", Ok(()))]).run();
 }

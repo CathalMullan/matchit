@@ -17,23 +17,23 @@ impl RemoveTest {
     fn run(self) {
         let mut router = Router::new();
 
-        for route in self.routes.iter() {
+        for route in &self.routes {
             assert_eq!(router.insert(*route, route.to_owned()), Ok(()), "{route}");
         }
 
-        for (op, route, expected) in self.ops.iter() {
+        for (op, route, expected) in &self.ops {
             match op {
                 Insert => {
-                    assert_eq!(router.insert(*route, route), Ok(()), "{route}")
+                    assert_eq!(router.insert(*route, route), Ok(()), "{route}");
                 }
                 Remove => {
-                    assert_eq!(router.remove(*route), *expected, "removing {route}",)
+                    assert_eq!(router.remove(*route), *expected, "removing {route}",);
                 }
             }
         }
 
         for route in self.remaining {
-            assert!(matches!(router.at(route), Ok(_)), "remaining {route}");
+            assert!(router.at(route).is_ok(), "remaining {route}");
         }
     }
 }
@@ -126,7 +126,7 @@ fn blog() {
         ],
         remaining: vec![],
     }
-    .run()
+    .run();
 }
 
 #[test]

@@ -83,5 +83,5 @@ async fn main() {
     Server::bind(&([127, 0, 0, 1], 3000).into())
         .serve(make_service)
         .await
-        .unwrap()
+        .unwrap();
 }
