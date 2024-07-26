@@ -104,7 +104,7 @@ in under 200 nanoseconds, an order of magnitude faster than most other routers. 
 
 ```text
 Compare Routers/matchit
-time:   [220.81 ns 221.00 ns 221.23 ns]
+time:   [252.25 ns 252.49 ns 252.83 ns]
 
 Compare Routers/actix
 time:   [24.118 µs 24.199 µs 24.279 µs]
