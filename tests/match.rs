@@ -1,4 +1,4 @@
-use matchit::{MatchError, Router};
+use matchit::{MatchError, Param, Router};
 
 // https://github.com/ibraheemdev/matchit/issues/22
 #[test]
@@ -51,14 +51,15 @@ fn overlapping_param_backtracking() {
         .unwrap();
 
     let matched = matcher.at("/secret/978/path").unwrap();
-    assert_eq!(matched.params.get("id"), Some("978"));
+    assert_eq!(matched.params[0].value, "978".as_bytes());
 
     let matched = matcher.at("/something/978").unwrap();
-    assert_eq!(matched.params.get("id"), Some("978"));
-    assert_eq!(matched.params.get("object"), Some("something"));
+    assert_eq!(matched.params[0].value, "something".as_bytes());
+    assert_eq!(matched.params[1].value, "978".as_bytes());
 
     let matched = matcher.at("/secret/978").unwrap();
-    assert_eq!(matched.params.get("id"), Some("978"));
+    assert_eq!(matched.params[0].value, "secret".as_bytes());
+    assert_eq!(matched.params[1].value, "978".as_bytes());
 }
 
 struct MatchTest {
@@ -85,8 +86,17 @@ impl MatchTest {
                 Ok(x) => {
                     assert_eq!(x.value, route);
 
-                    let got = x.params.iter().collect::<Vec<_>>();
-                    assert_eq!(params.unwrap(), got);
+                    assert_eq!(
+                        params
+                            .unwrap()
+                            .iter()
+                            .map(|x| Param {
+                                key: x.0.as_bytes(),
+                                value: x.1.as_bytes(),
+                            })
+                            .collect::<Vec<_>>(),
+                        x.params
+                    );
 
                     router.at_mut(path).unwrap().value.push('Z');
                     assert!(router.at(path).unwrap().value.contains('Z'));

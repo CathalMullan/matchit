@@ -1,4 +1,4 @@
-use crate::{InsertError, MatchError, Params};
+use crate::{InsertError, MatchError, Param};
 
 use std::cell::UnsafeCell;
 use std::cmp::min;
@@ -458,11 +458,11 @@ impl<T> Node<T> {
     pub fn at<'node, 'path>(
         &'node self,
         full_path: &'path [u8],
-    ) -> Result<(&'node UnsafeCell<T>, Params<'node, 'path>), MatchError> {
+    ) -> Result<(&'node UnsafeCell<T>, Vec<Param<'node, 'path>>), MatchError> {
         let mut current = self;
         let mut path = full_path;
         let mut backtracking = false;
-        let mut params = Params::new();
+        let mut params = vec![];
         let mut skipped_nodes: Vec<Skipped<'_, '_, T>> = vec![];
 
         'walk: loop {
@@ -476,7 +476,12 @@ impl<T> Node<T> {
                     // Found the matching value.
                     if let Some(ref value) = current.value {
                         // Remap the keys of any route parameters we accumulated during the search.
-                        params.for_each_key_mut(|(i, key)| *key = &current.remapping[i]);
+                        params
+                            .iter_mut()
+                            .map(|param: &mut Param<'node, 'path>| &mut param.key)
+                            .enumerate()
+                            .for_each(|(i, key)| *key = &current.remapping[i]);
+
                         return Ok((value, params));
                     }
                 }
@@ -562,10 +567,17 @@ impl<T> Node<T> {
 
                             // Store the parameter value.
                             // Parameters are normalized so the key is irrelevant for now.
-                            params.push(b"", path);
+                            params.push(Param {
+                                key: b"",
+                                value: path,
+                            });
 
                             // Remap the keys of any route parameters we accumulated during the search.
-                            params.for_each_key_mut(|(i, key)| *key = &current.remapping[i]);
+                            params
+                                .iter_mut()
+                                .map(|param| &mut param.key)
+                                .enumerate()
+                                .for_each(|(i, key)| *key = &current.remapping[i]);
 
                             return Ok((value, params));
                         }
@@ -578,7 +590,10 @@ impl<T> Node<T> {
                     if let [child] = current.children.as_slice() {
                         // Store the parameter value.
                         // Parameters are normalized so the key is irrelevant for now.
-                        params.push(b"", param);
+                        params.push(Param {
+                            key: b"",
+                            value: param,
+                        });
 
                         // Continue searching.
                         path = rest;
@@ -604,11 +619,15 @@ impl<T> Node<T> {
                     };
 
                     // Remap the keys of any route parameters we accumulated during the search.
-                    params.for_each_key_mut(|(i, key)| *key = &current.remapping[i]);
+                    params
+                        .iter_mut()
+                        .map(|param| &mut param.key)
+                        .enumerate()
+                        .for_each(|(i, key)| *key = &current.remapping[i]);
 
                     // Store the final catch-all parameter (`{*...}`).
                     let key = &current.prefix[2..current.prefix.len() - 1];
-                    params.push(key, path);
+                    params.push(Param { key, value: path });
 
                     return Ok((value, params));
                 }

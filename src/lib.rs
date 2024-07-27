@@ -96,13 +96,11 @@ As it turns out, this method of routing is extremely fast. See the [benchmark re
 #![deny(rust_2018_idioms, clippy::all)]
 
 mod error;
-mod params;
 mod router;
 mod tree;
 
 pub use error::{InsertError, MatchError};
-pub use params::{Params, ParamsIter};
-pub use router::{Match, Router};
+pub use router::{Match, Param, Router};
 
 #[cfg(doctest)]
 mod readme {
