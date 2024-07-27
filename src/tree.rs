@@ -10,29 +10,29 @@ use std::{fmt, mem};
 /// See [the crate documentation](crate) for details.
 pub struct Node<T> {
     // This node's prefix.
-    pub(crate) prefix: Vec<u8>,
+    pub prefix: Vec<u8>,
     // The priority of this node.
     //
     // Nodes with more children are higher priority and searched first.
-    pub(crate) priority: u32,
+    pub priority: u32,
     // Whether this node contains a wildcard child.
-    pub(crate) wild_child: bool,
+    pub wild_child: bool,
     // The first character of any static children, for fast linear search.
-    pub(crate) indices: Vec<u8>,
+    pub indices: Vec<u8>,
     // The type of this node.
-    pub(crate) node_type: NodeType,
-    pub(crate) children: Vec<Self>,
+    pub node_type: NodeType,
+    pub children: Vec<Self>,
     // The value stored at this node.
     //
     // See `Node::at` for why an `UnsafeCell` is necessary.
     value: Option<UnsafeCell<T>>,
     // Parameter name remapping, stored at nodes that hold values.
-    pub(crate) remapping: ParamRemapping,
+    pub remapping: ParamRemapping,
 }
 
 /// The types of nodes a tree can hold.
 #[derive(PartialEq, Eq, PartialOrd, Ord, Debug, Clone)]
-pub(crate) enum NodeType {
+pub enum NodeType {
     /// The root path.
     Root,
     /// A route parameter, e.g. `/{id}`.
@@ -715,7 +715,7 @@ fn normalize_params(mut path: Vec<u8>) -> Result<(Vec<u8>, ParamRemapping), Inse
 }
 
 /// Restores `route` to it's original, denormalized form.
-pub(crate) fn denormalize_params(route: &mut Vec<u8>, params: &ParamRemapping) {
+pub fn denormalize_params(route: &mut Vec<u8>, params: &ParamRemapping) {
     let mut start = 0;
     let mut i = 0;
 

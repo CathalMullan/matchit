@@ -6,7 +6,7 @@ use crate::{InsertError, MatchError};
 /// See [the crate documentation](crate) for details.
 #[derive(Clone, Debug)]
 pub struct Router<T> {
-    root: Node<T>,
+    pub root: Node<T>,
 }
 
 impl<T> Default for Router<T> {
