@@ -216,28 +216,6 @@ fn invalid_param() {
 }
 
 #[test]
-fn escaped_param() {
-    InsertTest(vec![
-        ("{{", Ok(())),
-        ("}}", Ok(())),
-        ("xx}}", Ok(())),
-        ("}}yy", Ok(())),
-        ("}}yy{{}}", Ok(())),
-        ("}}yy{{}}{{}}y{{", Ok(())),
-        ("}}yy{{}}{{}}y{{", Err(conflict("}yy{}{}y{"))),
-        ("/{{yy", Ok(())),
-        ("/{yy}", Ok(())),
-        ("/foo", Ok(())),
-        ("/foo/{{", Ok(())),
-        ("/foo/{{/{x}", Ok(())),
-        ("/foo/{ba{{r}", Ok(())),
-        ("/bar/{ba}}r}", Ok(())),
-        ("/xxx/{x{{}}y}", Ok(())),
-    ])
-    .run();
-}
-
-#[test]
 fn bare_catchall() {
     InsertTest(vec![("{*foo}", Ok(())), ("foo/{*bar}", Ok(()))]).run();
 }

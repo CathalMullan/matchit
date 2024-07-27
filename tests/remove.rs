@@ -235,31 +235,3 @@ fn remove_root() {
     }
     .run();
 }
-
-#[test]
-fn check_escaped_params() {
-    RemoveTest {
-        routes: vec![
-            "/foo/{id}",
-            "/foo/{id}/bar",
-            "/bar/{user}/{id}",
-            "/bar/{user}/{id}/baz",
-            "/baz/{product}/{user}/{id}",
-        ],
-        ops: vec![
-            (Remove, "/foo/{a}", None),
-            (Remove, "/foo/{a}/bar", None),
-            (Remove, "/bar/{a}/{b}", None),
-            (Remove, "/bar/{a}/{b}/baz", None),
-            (Remove, "/baz/{a}/{b}/{c}", None),
-        ],
-        remaining: vec![
-            "/foo/{id}",
-            "/foo/{id}/bar",
-            "/bar/{user}/{id}",
-            "/bar/{user}/{id}/baz",
-            "/baz/{product}/{user}/{id}",
-        ],
-    }
-    .run();
-}

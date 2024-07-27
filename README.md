@@ -51,20 +51,6 @@ assert_eq!(m.at("/c/bar.css")?.params.get("p"), Some("c/bar.css"));
 assert!(m.at("/").is_err());
 ```
 
-The literal characters `{` and `}` may be included in a static route by escaping them with the same character. For example, the `{` character is escaped with `{{` and the `}` character is escaped with `}}`.
-
-```rust,ignore
-let mut m = Router::new();
-m.insert("/{{hello}}", true)?;
-m.insert("/{hello}", true)?;
-
-// match the static route
-assert!(m.at("/{hello}")?.value);
-
-// match the dynamic route
-assert_eq!(m.at("/hello")?.params.get("hello"), Some("hello"));
-```
-
 ## Routing Priority
 
 Static and dynamic route segments are allowed to overlap. If they do, static segments will be given higher priority:

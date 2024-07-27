@@ -1,4 +1,3 @@
-use crate::escape::{UnescapedRef, UnescapedRoute};
 use crate::tree::{denormalize_params, Node};
 
 use std::fmt;
@@ -18,8 +17,6 @@ pub enum InsertError {
     /// `/foo-{bar}` is a valid route, but `/{bar}-foo` is not.
     InvalidParamSegment,
     /// Parameters must be registered with a valid name and matching braces.
-    ///
-    /// Note you can use `{{` or `}}` to escape literal brackets.
     InvalidParam,
     /// Catch-all parameters are only allowed at the end of a path.
     InvalidCatchAll,
@@ -53,18 +50,14 @@ impl InsertError {
     /// Returns an error for a route conflict with the given node.
     ///
     /// This method attempts to find the full conflicting route.
-    pub(crate) fn conflict<T>(
-        route: &UnescapedRoute,
-        prefix: UnescapedRef<'_>,
-        current: &Node<T>,
-    ) -> Self {
-        let mut route = route.clone();
+    pub(crate) fn conflict<T>(route: &[u8], prefix: &'_ [u8], current: &Node<T>) -> Self {
+        let mut route = route.to_owned();
 
         // The route is conflicting with the current node.
-        if prefix.unescaped() == current.prefix.unescaped() {
+        if prefix == current.prefix {
             denormalize_params(&mut route, &current.remapping);
             return InsertError::Conflict {
-                with: String::from_utf8(route.into_unescaped()).unwrap(),
+                with: String::from_utf8(route).unwrap(),
             };
         }
 
@@ -73,13 +66,13 @@ impl InsertError {
 
         // Add the conflicting prefix.
         if !route.ends_with(&current.prefix) {
-            route.append(&current.prefix);
+            route.extend_from_slice(&current.prefix);
         }
 
         // Add the prefixes of any conflicting children.
         let mut child = current.children.first();
         while let Some(node) = child {
-            route.append(&node.prefix);
+            route.extend_from_slice(&node.prefix);
             child = node.children.first();
         }
 
@@ -92,7 +85,7 @@ impl InsertError {
 
         // Return the conflicting route.
         InsertError::Conflict {
-            with: String::from_utf8(route.into_unescaped()).unwrap(),
+            with: String::from_utf8(route).unwrap(),
         }
     }
 }

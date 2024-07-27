@@ -34,8 +34,3 @@ __test_helpers = []
 [[bench]]
 name = "bench"
 harness = false
-
-[profile.release]
-lto = true
-opt-level = 3
-codegen-units = 1

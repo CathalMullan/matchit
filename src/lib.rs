@@ -54,24 +54,6 @@ assert!(m.at("/").is_err());
 # }
 ```
 
-The literal characters `{` and `}` may be included in a static route by escaping them with the same character. For example, the `{` character is escaped with `{{` and the `}` character is escaped with `}}`.
-
-```rust
-# use matchit::Router;
-# fn main() -> Result<(), Box<dyn std::error::Error>> {
-let mut m = Router::new();
-m.insert("/{{hello}}", true)?;
-m.insert("/{hello}", true)?;
-
-// match the static route
-assert!(m.at("/{hello}")?.value);
-
-// match the dynamic route
-assert_eq!(m.at("/hello")?.params.get("hello"), Some("hello"));
-# Ok(())
-# }
-```
-
 # Routing Priority
 
 Static and dynamic route segments are allowed to overlap. If they do, static segments will be given higher priority:
@@ -114,7 +96,6 @@ As it turns out, this method of routing is extremely fast. See the [benchmark re
 #![deny(rust_2018_idioms, clippy::all)]
 
 mod error;
-mod escape;
 mod params;
 mod router;
 mod tree;
